@@ -79,17 +79,48 @@ const messages = await listMessages(config, accessToken, 10);
 const message = await getMessage(config, accessToken, messages[0].id);
 ```
 
+## Testing
+
+This library includes comprehensive automated tests using Vitest.
+
+### Quick Start
+
+Run all unit tests (no network required):
+
+```bash
+npm test
+```
+
+View test coverage:
+
+```bash
+npm run test:coverage
+```
+
+### Testing Strategy
+
+For detailed testing information, see **[Testing Strategy Documentation](ai-docs/testing-strategy.md)**.
+
+**Summary**:
+
+- **Unit Tests**: Fast, isolated tests with mocked HTTP calls. Cover all public API functions, error handling, and edge cases. Assert behavioral contracts (URLs, headers, params, return values) rather than implementation details.
+
+- **Integration Tests**: Optional live tests against Gmail API. Run with `GMAIL_LIVE_TEST=1 npm test`. Requires a dedicated Gmail test account with OAuth2 credentials configured. Tests are skipped by default.
+
+- **App-Level Tests**: Application-specific tests belong in consuming applications (e.g., `tdg-assistant`), not in this library repo.
+
 ## Code Quality
 
 - **Type Safety**: 100% TypeScript type coverage (no `any` types)
 - **Documentation**: Complete JSDoc comments for all exported functions and interfaces
 - **Error Handling**: Fail-hard approach with clear, actionable error messages
+- **Test Coverage**: Comprehensive unit tests with optional integration tests
 - **Dependencies**: Minimal dependencies (dotenv only, using native `fetch` API)
 
 ## Technical Notes
 
 - **Node.js**: Requires Node.js 22+ (for native `fetch` support)
 - **TypeScript**: Strict mode enabled, ES modules with NodeNext module resolution
-- **Testing**: Manual verification via CLI (no test framework per requirements)
+- **Testing**: Vitest for unit tests, optional integration tests for live Gmail API
 - **Security**: Never logs tokens, secrets, or Authorization headers
 

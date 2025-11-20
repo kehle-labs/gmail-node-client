@@ -3,9 +3,13 @@
 
 # Environment variables
 .env.local
+.env.*
 
 # TypeScript build output
 dist/
 
 # Node modules
 node_modules/
+
+# Test coverage
+coverage/
