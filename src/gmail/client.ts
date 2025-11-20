@@ -1,10 +1,46 @@
 import type { GmailConfig } from './config.js';
 
 /**
+ * Gmail message header structure.
+ */
+export interface MessageHeader {
+  name: string;
+  value: string;
+}
+
+/**
+ * Gmail message payload structure.
+ */
+export interface MessagePayload {
+  headers?: MessageHeader[];
+  parts?: MessagePayload[];
+  body?: {
+    data?: string;
+    size?: number;
+  };
+  mimeType?: string;
+}
+
+/**
+ * Full Gmail message structure returned by the API.
+ */
+export interface GmailMessage {
+  id: string;
+  threadId: string;
+  labelIds?: string[];
+  snippet?: string;
+  historyId?: string;
+  internalDate?: string;
+  payload?: MessagePayload;
+  sizeEstimate?: number;
+  raw?: string;
+}
+
+/**
  * Exchanges a Google OAuth2 refresh token for an access token.
  * @param cfg Gmail configuration containing OAuth credentials
  * @returns Access token string
- * @throws Error if token exchange fails
+ * @throws Error if token exchange fails or response is invalid
  */
 export async function fetchAccessToken(
   cfg: GmailConfig
@@ -45,8 +81,14 @@ export async function fetchAccessToken(
   return data.access_token;
 }
 
+/**
+ * Summary of a Gmail message with minimal metadata.
+ * Returned by listMessages() for efficient bulk operations.
+ */
 export interface MessageSummary {
+  /** Gmail message ID */
   id: string;
+  /** Gmail thread ID */
   threadId: string;
 }
 
@@ -110,14 +152,14 @@ export async function listMessages(
  * @param cfg Gmail configuration
  * @param accessToken OAuth access token
  * @param id Message ID
- * @returns Full message object from Gmail API
- * @throws Error if API call fails
+ * @returns Full Gmail message object with payload, headers, and metadata
+ * @throws Error if API call fails or response is invalid
  */
 export async function getMessage(
   cfg: GmailConfig,
   accessToken: string,
   id: string
-): Promise<any> {
+): Promise<GmailMessage> {
   const url = `https://gmail.googleapis.com/gmail/v1/users/${encodeURIComponent(cfg.userEmail)}/messages/${id}?format=full`;
 
   const response = await fetch(url, {
@@ -133,6 +175,14 @@ export async function getMessage(
     );
   }
 
-  return await response.json();
+  const message = (await response.json()) as GmailMessage;
+  
+  if (!message.id) {
+    throw new Error(
+      `Invalid message response: missing message ID in response from Gmail API`
+    );
+  }
+
+  return message;
 }
 

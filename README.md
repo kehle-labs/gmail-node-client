@@ -1,17 +1,18 @@
-# Gmail Test Harness
+# Gmail API Client Library
 
-A minimal Node.js + TypeScript test harness for Gmail API integration testing.
+A production-worthy Node.js + TypeScript Gmail API client library for OAuth2 authentication and message operations. Designed as reusable, maintainable code following best practices that can be integrated into production applications.
 
 ## Purpose
 
-This is a throwaway test repository for experimenting with Gmail OAuth2 and API integration patterns before porting clean code back into the main application.
+This library provides clean, production-ready Gmail OAuth2 and API integration code that can be reused across applications. While it includes a CLI tool for testing, the core library code (`src/gmail/`) is structured as reusable, importable modules suitable for production use.
 
 ## Features
 
-- Exchange Google OAuth2 refresh tokens for access tokens
-- List Gmail messages with optional label/query filtering
-- Fetch individual message details
-- Simple CLI interface for testing
+- **Production Quality**: Full TypeScript type safety, comprehensive JSDoc documentation, fail-hard error handling
+- **OAuth2 Authentication**: Exchange Google OAuth2 refresh tokens for access tokens
+- **Message Operations**: List Gmail messages with optional label/query filtering, fetch full message details
+- **Reusable Library**: Clean, modular code structure that can be easily imported into other applications
+- **CLI Tool**: Simple command-line interface for testing and debugging
 
 ## Setup
 
@@ -42,17 +43,53 @@ The number argument is optional (defaults to 5).
 
 ## Project Structure
 
-- `src/gmail/config.ts` - Configuration loader
-- `src/gmail/client.ts` - Gmail API client
-- `src/bin/gmail-list.ts` - CLI entrypoint
+### Library Code (Reusable)
+- `src/gmail/config.ts` - Configuration loader with validation
+- `src/gmail/client.ts` - Gmail API client (OAuth + message operations) with full type definitions
+
+### Tools
+- `src/bin/gmail-list.ts` - CLI entrypoint for testing and demonstration
+
+### Documentation
+- `ai-docs/` - Complete design, plan, and implementation documentation
+- `.env.example` - Environment variable template
 
 ## Environment Variables
 
 See `.env.example` for all available configuration options.
 
-## Notes
+## Library Usage
 
-- No test framework - manual verification only
-- Uses native `fetch` for HTTP calls (no googleapis dependency)
-- Clean, greenfield code designed for easy porting
+To use this library in your application:
+
+```typescript
+import { loadGmailConfig } from './gmail/config.js';
+import { fetchAccessToken, listMessages, getMessage } from './gmail/client.js';
+
+// Load configuration
+const config = loadGmailConfig();
+
+// Get access token
+const accessToken = await fetchAccessToken(config);
+
+// List messages
+const messages = await listMessages(config, accessToken, 10);
+
+// Fetch full message
+const message = await getMessage(config, accessToken, messages[0].id);
+```
+
+## Code Quality
+
+- **Type Safety**: 100% TypeScript type coverage (no `any` types)
+- **Documentation**: Complete JSDoc comments for all exported functions and interfaces
+- **Error Handling**: Fail-hard approach with clear, actionable error messages
+- **Dependencies**: Minimal dependencies (dotenv only, using native `fetch` API)
+
+## Technical Notes
+
+- **Node.js**: Requires Node.js 22+ (for native `fetch` support)
+- **TypeScript**: Strict mode enabled, ES modules with NodeNext module resolution
+- **Testing**: Manual verification via CLI (no test framework per requirements)
+- **Security**: Never logs tokens, secrets, or Authorization headers
 

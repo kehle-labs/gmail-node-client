@@ -50,7 +50,7 @@ async function main() {
       // Extract subject from headers
       const headers = fullMessage.payload?.headers || [];
       const subjectHeader = headers.find(
-        (h: { name: string; value: string }) => h.name === 'Subject'
+        (h) => h.name === 'Subject'
       );
       const subject = subjectHeader?.value || '(no subject)';
 
