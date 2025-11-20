@@ -1,0 +1,11 @@
+# Promptonomicon scratch directory
+.scratch/
+
+# Environment variables
+.env.local
+
+# TypeScript build output
+dist/
+
+# Node modules
+node_modules/

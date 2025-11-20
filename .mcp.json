@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "versionator": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@versionator/mcp-server"
+      ],
+      "description": "Check latest versions of packages across all ecosystems"
+    }
+  }
+}

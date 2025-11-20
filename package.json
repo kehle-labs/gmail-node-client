@@ -1,0 +1,19 @@
+{
+  "name": "mail_test",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Gmail test harness for OAuth2 and API integration testing",
+  "scripts": {
+    "build": "tsc",
+    "gmail:list": "tsx src/bin/gmail-list.ts"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "tsx": "^4.20.6",
+    "@types/node": "^24.10.1"
+  }
+}
+

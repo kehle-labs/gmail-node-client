@@ -1,0 +1,26 @@
+---
+alwaysApply: true
+---
+
+# Red-Green-Refactor (RGR) Pattern
+
+## Mandatory Process
+
+**We ALWAYS use Red-Green-Refactor for EVERY request.**
+
+### 1. RED: Write Failing Tests First
+- Create or modify a test file *before* writing any implementation code.
+- Ensure the test fails (compilation error or assertion failure) for the expected reason.
+- This defines the "done" state for the feature.
+
+### 2. GREEN: Implement Minimal Code
+- Write just enough code to make the test pass.
+- Do not optimize yet.
+- Do not add extra features not covered by the test.
+
+### 3. REFACTOR: Improve Code Quality
+- Clean up the code while keeping tests green.
+- Apply patterns, improve naming, remove duplication.
+- Ensure SOLID principles.
+
+> "Do not skip tests, do not write code first, do not write tests after implementation."
