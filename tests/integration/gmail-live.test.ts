@@ -68,9 +68,10 @@ describe('Gmail Live Integration Tests', () => {
         expect(fullMessage.id).toBe(messageId);
         expect(typeof fullMessage.threadId).toBe('string');
 
-        // Avoid brittle assertions about message content - just verify structure exists
-        // The message may have payload, snippet, etc. but we don't assert specific values
-        // as test account content may vary
+        // Critical: raw field must be present for RFC 822 message decoding
+        expect(fullMessage).toHaveProperty('raw');
+        expect(fullMessage.raw).toBeTypeOf('string');
+        expect(fullMessage.raw!.length).toBeGreaterThan(0);
       }
       // If no messages, test still passes - account may be empty (expected for test account)
     }

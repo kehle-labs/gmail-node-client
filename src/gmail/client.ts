@@ -148,11 +148,11 @@ export async function listMessages(
 }
 
 /**
- * Fetches a full Gmail message by ID.
+ * Fetches a Gmail message by ID with raw RFC 822 content.
  * @param cfg Gmail configuration
  * @param accessToken OAuth access token
  * @param id Message ID
- * @returns Full Gmail message object with payload, headers, and metadata
+ * @returns Gmail message object with raw field containing base64url-encoded RFC 822 message
  * @throws Error if API call fails or response is invalid
  */
 export async function getMessage(
@@ -160,7 +160,7 @@ export async function getMessage(
   accessToken: string,
   id: string
 ): Promise<GmailMessage> {
-  const url = `https://gmail.googleapis.com/gmail/v1/users/${encodeURIComponent(cfg.userEmail)}/messages/${id}?format=full`;
+  const url = `https://gmail.googleapis.com/gmail/v1/users/${encodeURIComponent(cfg.userEmail)}/messages/${id}?format=raw`;
 
   const response = await fetch(url, {
     headers: {

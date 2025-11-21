@@ -196,10 +196,10 @@ describe('getMessage', () => {
     vi.restoreAllMocks();
   });
 
-  it('calls Gmail API with correct URL and format=full', async () => {
+  it('calls Gmail API with correct URL and format=raw', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ id: messageId, threadId: 'thread1' }),
+      json: async () => ({ id: messageId, threadId: 'thread1', raw: 'dGVzdCBtZXNzYWdl' }),
     });
 
     global.fetch = mockFetch;
@@ -209,7 +209,7 @@ describe('getMessage', () => {
     expect(mockFetch).toHaveBeenCalledOnce();
     const callUrl = mockFetch.mock.calls[0][0];
     expect(callUrl).toBe(
-      `https://gmail.googleapis.com/gmail/v1/users/test%40example.com/messages/${messageId}?format=full`
+      `https://gmail.googleapis.com/gmail/v1/users/test%40example.com/messages/${messageId}?format=raw`
     );
 
     const callOptions = mockFetch.mock.calls[0][1];
@@ -218,14 +218,12 @@ describe('getMessage', () => {
     });
   });
 
-  it('returns GmailMessage with all fields', async () => {
+  it('returns GmailMessage with all fields including raw', async () => {
     const mockMessage = {
       id: messageId,
       threadId: 'thread1',
       snippet: 'Test message snippet',
-      payload: {
-        headers: [{ name: 'Subject', value: 'Test Subject' }],
-      },
+      raw: 'UmVmZXJlbmNlOiBkZWZhdWx0LUZyb206IHNlbmRlckBleGFtcGxlLmNvbQpUbzogcmVjZWl2ZXJAZXhhbXBsZS5jb20KU3ViamVjdDogVGVzdCBTdWJqZWN0CkNvbnRlbnQtVHlwZTogdGV4dC9wbGFpbgpNSU1FLVZlcnNpb246IDEuMAoKTWVzc2FnZSBib2R5',
     };
 
     const mockFetch = vi.fn().mockResolvedValue({
@@ -239,6 +237,30 @@ describe('getMessage', () => {
 
     expect(message).toEqual(mockMessage);
     expect(message.id).toBe(messageId);
+    expect(message.raw).toBeDefined();
+    expect(message.raw).toBe(mockMessage.raw);
+    expect(message.raw!.length).toBeGreaterThan(0);
+  });
+
+  it('returns GmailMessage with raw field populated when API returns raw content', async () => {
+    const mockRawContent = 'UmVmZXJlbmNlOiBkZWZhdWx0LUZyb206IHNlbmRlckBleGFtcGxlLmNvbQpUbzogcmVjZWl2ZXJAZXhhbXBsZS5jb20KU3ViamVjdDogVGVzdCBTdWJqZWN0CkNvbnRlbnQtVHlwZTogdGV4dC9wbGFpbgpNSU1FLVZlcnNpb246IDEuMAoKTWVzc2FnZSBib2R5';
+    
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ 
+        id: messageId, 
+        threadId: 'thread1',
+        raw: mockRawContent,
+      }),
+    });
+
+    global.fetch = mockFetch;
+
+    const message = await getMessage(mockConfig, accessToken, messageId);
+
+    expect(message.raw).toBeDefined();
+    expect(message.raw).toBe(mockRawContent);
+    expect(message.raw!.length).toBeGreaterThan(0);
   });
 
   it('throws Error with HTTP status code when API call fails', async () => {
