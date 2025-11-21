@@ -35,7 +35,7 @@ All components follow fail-hard principles: missing configuration throws clear e
 ### Project Structure
 
 ```
-mail_test/
+gmail-node-client/
 ├── package.json              # ES modules, scripts, dependencies
 ├── tsconfig.json             # TypeScript config for NodeNext (strict mode)
 ├── .env.example              # Environment variable template

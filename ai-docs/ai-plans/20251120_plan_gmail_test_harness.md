@@ -188,7 +188,7 @@ All dependencies verified with Versionator MCP:
 
 ## File Structure
 ```
-mail_test/
+gmail-node-client/
 ├── package.json
 ├── tsconfig.json
 ├── .env.example (to create)

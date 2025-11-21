@@ -4,7 +4,8 @@
 **Date**: 20251120  
 **Status**: Complete  
 **Design**: `ai-docs/ai-design/20251120_design_gmail_test_harness.md`  
-**Implementation**: `ai-docs/ai-implementation/20251120_implementation_gmail_test_harness.md`
+**Implementation**: `ai-docs/ai-implementation/20251120_implementation_gmail_test_harness.md`  
+**Repository**: `gmail-node-client`
 
 ## Overview
 
@@ -225,5 +226,6 @@ To integrate into another application:
 
 - **Design Document**: `ai-docs/ai-design/20251120_design_gmail_test_harness.md`
 - **Implementation Doc**: `ai-docs/ai-implementation/20251120_implementation_gmail_test_harness.md`
+- **Repository**: `gmail-node-client`
 - **Gmail API Documentation**: https://developers.google.com/gmail/api
 

@@ -315,6 +315,7 @@ export interface GmailConfig {
 ## References
 
 - Implementation: `ai-docs/ai-implementation/20251120_implementation_gmail_test_harness.md`
+- Repository: `gmail-node-client`
 - Gmail API Docs: https://developers.google.com/gmail/api
 - OAuth2 RFC: https://oauth.net/2/
 

@@ -1,5 +1,5 @@
 {
-  "name": "mail_test",
+  "name": "gmail-node-client",
   "version": "1.0.0",
   "type": "module",
   "description": "Gmail test harness for OAuth2 and API integration testing",
